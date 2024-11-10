@@ -6,8 +6,6 @@ import os
 # Load environment variables from .env file
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
-print("Printing token ............................")
-print(TOKEN)
 
 bot = Application.builder().token(TOKEN).build()
 

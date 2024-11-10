@@ -1,17 +1,23 @@
 from fastapi import FastAPI, Request, BackgroundTasks
+from dotenv import load_dotenv
 from bot.bot import bot
-from model.models import create_db_and_tables
+import os
+
+# from model.models import create_db_and_tables
+load_dotenv()
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 app = FastAPI()
 
 @app.on_event("startup")
 async def startup_event():
+    # print("start")
     # create_db_and_tables()
-    bot.run_webhook()
+    await bot.bot.set_webhook(WEBHOOK_URL)
 
 @app.post("/webhook")
 async def webhook(update: dict, background_tasks: BackgroundTasks):
-    bot.process_update(update)
+    await bot.process_update(update)
     return "ok"
 
 @app.get("/")
